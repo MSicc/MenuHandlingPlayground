@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    Shell.FlyoutBehavior="Disabled"
+    Title="MenuHandlingPlayground"
+    x:Class="MenuHandlingPlayground.AppShell"
+    x:DataType="viewModel:AppShellViewModel"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:local="clr-namespace:MenuHandlingPlayground"
+    xmlns:viewModel="clr-namespace:MenuHandlingPlayground.ViewModel"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Shell.MenuBarItems>
+        <MenuBarItem Text="Application">
+            <!--  we cannot handle the order of the flyout items without removing the original one and make our own implementation  -->
+            <MenuFlyoutItem Command="{Binding AboutCommand}" Text="About MenuHandlingPlayground" />
+            <!--  MenuFlyoutSeparator not working, see https://github.com/dotnet/maui/issues/19870  -->
+            <!-- <MenuFlyoutSeparator /> -->
+            <MenuFlyoutItem Command="{Binding SettingsCommand}" Text="Settings">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="," Modifiers="Cmd" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+        </MenuBarItem>
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem Command="{Binding OpenFileCommand}" Text="Open file">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="O" Modifiers="Cmd" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+            <!--  MenuFlyoutSeparator not working, see https://github.com/dotnet/maui/issues/19870  -->
+            <!-- <MenuFlyoutSeparator /> -->
+            <MenuFlyoutItem Command="{Binding CloseFileCommand}" Text="Close file">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="C" Modifiers="Alt,Cmd" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+        </MenuBarItem>
+        <MenuBarItem Text="List">
+            <MenuFlyoutItem
+                Command="{Binding ListMenuBarItemCommand}"
+                CommandParameter="{x:Int32 0}"
+                Text="FirstItem" />
+            <MenuFlyoutItem
+                Command="{Binding ListMenuBarItemCommand}"
+                CommandParameter="{x:Int32 2}"
+                Text="LastItem" />
+        </MenuBarItem>
+        <MenuBarItem Text="Accounts">
+            <MenuFlyoutSubItem Text="Account 1">
+                <MenuFlyoutItem Command="{Binding Account1LoginCommand}" Text="Login" />
+            </MenuFlyoutSubItem>
+            <MenuFlyoutSubItem Text="Account 2">
+                <MenuFlyoutItem Command="{Binding Account2LoginCommand}" Text="Login" />
+            </MenuFlyoutSubItem>
+        </MenuBarItem>
+    </Shell.MenuBarItems>
+
+    <ShellContent
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage"
+        Title="Home" />
+
+</Shell>
