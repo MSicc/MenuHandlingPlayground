@@ -28,11 +28,11 @@ public static class MauiProgram
 
 
 
-    private static void CreateService(IServiceCollection services)
-    {
-        services.AddSingleton<IDialogService, DialogService>();
-        services.AddSingleton<IMenuService, MenuService>();
-    }
+private static void CreateService(IServiceCollection services)
+{
+    services.AddSingleton<IDialogService, DialogService>();
+    services.AddSingleton<IMenuService, MenuService>();
+}
     
     private static void CreateViewModels(IServiceCollection services)
     {

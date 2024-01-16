@@ -87,7 +87,7 @@ namespace MenuHandlingPlayground.Services
             ForceMenuRebuild();
         }
         
-        public void AddMenuFlyoutItemToSubItem(string parentSubMenu, string name, Action execute, int position = -1, KeyboardAcceleratorModifiers modifiers = KeyboardAcceleratorModifiers.None, string? shortCutKey = null)
+        public void AddMenuFlyoutItemToSubMenu(string parentSubMenu, string name, Action execute, int position = -1, KeyboardAcceleratorModifiers modifiers = KeyboardAcceleratorModifiers.None, string? shortCutKey = null)
         {
             var subMenu = GetSubMenu(parentSubMenu);
 
@@ -135,8 +135,8 @@ namespace MenuHandlingPlayground.Services
             var itemToRemove = GetMenuFlyoutItem(name);
             
             if (itemToRemove == null)
-                throw new ArgumentNullException($"no MenuFlyouITem with text {name} found in MenuBarItem with text {menu}");
-        
+                throw new ArgumentNullException($"no MenuFlyouItem with text {name} found in MenuBarItem with text {menu}");
+
             menuBarItem.Remove(itemToRemove);
             
             ForceMenuRebuild();

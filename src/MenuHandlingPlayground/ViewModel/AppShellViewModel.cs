@@ -64,13 +64,13 @@ namespace MenuHandlingPlayground.ViewModel
             if (_menuService.MenuFlyoutItemInSubMenuExists(subMenuParent, sampleAccountName))
                 return;
             
-            _menuService.AddMenuFlyoutItemToSubItem(subMenuParent, sampleAccountName, () => ShowSelectedMessage($"{nameof(FakeAccountLogin)} for id {id}"));
+            _menuService.AddMenuFlyoutItemToSubMenu(subMenuParent, sampleAccountName, () => ShowSelectedMessage($"{nameof(FakeAccountLogin)} for id {id}"));
             
             if (_menuService.MenuFlyoutItemInSubMenuExists(subMenuParent, "Login"))
                 _menuService.RemoveMenuFlyoutItemFromSubMenu(subMenuParent, "Login");
             
             if (!_menuService.MenuFlyoutItemInSubMenuExists(subMenuParent, "Logout"))
-                _menuService.AddMenuFlyoutItemToSubItem(subMenuParent, "Logout", ()=> Logout(id), modifiers: KeyboardAcceleratorModifiers.Cmd | KeyboardAcceleratorModifiers.Shift, shortCutKey: id.ToString());
+                _menuService.AddMenuFlyoutItemToSubMenu(subMenuParent, "Logout", ()=> Logout(id), modifiers: KeyboardAcceleratorModifiers.Cmd | KeyboardAcceleratorModifiers.Shift, shortCutKey: id.ToString());
         }
 
         private void Logout(int id)
@@ -89,7 +89,7 @@ namespace MenuHandlingPlayground.ViewModel
                 return;
             
             if (!_menuService.MenuFlyoutItemInSubMenuExists(subMenuParent, "Login"))
-                _menuService.AddMenuFlyoutItemToSubItem(subMenuParent, "Login", () => FakeAccountLogin(id));
+                _menuService.AddMenuFlyoutItemToSubMenu(subMenuParent, "Login", () => FakeAccountLogin(id));
         }
 
 
