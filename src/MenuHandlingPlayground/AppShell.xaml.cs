@@ -16,9 +16,4 @@ public partial class AppShell : Shell
 
         this.BindingContext = appShellVm;
     }
-
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-    }
 }

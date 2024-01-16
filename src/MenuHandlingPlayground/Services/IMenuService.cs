@@ -13,5 +13,6 @@ namespace MenuHandlingPlayground.Services
         bool MenuFlyoutItemExists(string name);
         bool SubMenuExists(string name);
         bool MenuFlyoutItemInSubMenuExists(string parentSubMenu, string name);
+        Page? MenuHostingPage { get;  set; }
     }
 }

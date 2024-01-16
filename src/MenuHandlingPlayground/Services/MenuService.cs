@@ -10,11 +10,15 @@ namespace MenuHandlingPlayground.Services
 {
     public class MenuService : IMenuService
     {
+       
         public IMenuFlyoutItem? GetMenuFlyoutItem(string name)
         {
-            IMenuFlyoutItem? result = null;
+            if (this.MenuHostingPage == null)
+                throw new InvalidOperationException($"{nameof(this.MenuHostingPage)} must not be null");
             
-            Shell.Current.MenuBarItems.ToList().ForEach(menuBarItem =>
+            IMenuFlyoutItem? result = null;
+
+            this.MenuHostingPage.MenuBarItems.ToList().ForEach(menuBarItem =>
             {
                 var foundItem = menuBarItem.SingleOrDefault(menuElement => menuElement is MenuFlyoutItem menuItem && menuItem.Text == name);
 
@@ -27,9 +31,12 @@ namespace MenuHandlingPlayground.Services
         
         public IMenuFlyoutSubItem? GetSubMenu(string name)
         {
+            if (this.MenuHostingPage == null)
+                throw new InvalidOperationException($"{nameof(this.MenuHostingPage)} must not be null");
+            
             IMenuFlyoutSubItem? result = null;
             
-            Shell.Current.MenuBarItems.ToList().ForEach(menuBarItem =>
+            this.MenuHostingPage.MenuBarItems.ToList().ForEach(menuBarItem =>
             {
                 var foundItem = menuBarItem.SingleOrDefault(menuElement => menuElement is MenuFlyoutSubItem subMenu && subMenu.Text == name);
 
@@ -52,13 +59,16 @@ namespace MenuHandlingPlayground.Services
         
         public void AddMenuFlyoutItem(string menu, string name, Action execute, int position = -1, KeyboardAcceleratorModifiers modifiers = KeyboardAcceleratorModifiers.None, string? shortCutKey = null)
         {
-            var menuBarItem = Shell.Current.MenuBarItems.ToList().SingleOrDefault(menuBarItem => menuBarItem.Text == menu);
+            if (this.MenuHostingPage == null)
+                throw new InvalidOperationException($"{nameof(this.MenuHostingPage)} must not be null");
+            
+            var menuBarItem = this.MenuHostingPage.MenuBarItems.ToList().SingleOrDefault(menuBarItem => menuBarItem.Text == menu);
             
             if (menuBarItem == null)
-                throw new ArgumentNullException($"no MenuBarItem with text {menu} found in current application menu");
+                throw new InvalidOperationException($"no MenuBarItem with text {menu} found in current application menu");
             
             if (menuBarItem.Any(element => element.Text == name))
-                throw new ArgumentException($"MenuBarItem with text {menu} contains already an item with text '{name}'");
+                throw new InvalidOperationException($"MenuBarItem with text {menu} contains already an item with text '{name}'");
             
             var itemToAdd = new MenuFlyoutItem()
             {
@@ -89,13 +99,14 @@ namespace MenuHandlingPlayground.Services
         
         public void AddMenuFlyoutItemToSubMenu(string parentSubMenu, string name, Action execute, int position = -1, KeyboardAcceleratorModifiers modifiers = KeyboardAcceleratorModifiers.None, string? shortCutKey = null)
         {
+            
             var subMenu = GetSubMenu(parentSubMenu);
 
             if (subMenu == null)
-                throw new ArgumentNullException($"no MenuFlyoutSubItem with text {parentSubMenu} found in current application menu");
+                throw new InvalidOperationException($"no MenuFlyoutSubItem with text {parentSubMenu} found in current application menu");
 
             if (MenuFlyoutItemInSubMenuExists(parentSubMenu, name))
-                throw new ArgumentException($"MenuFlyoutSubItem with text {parentSubMenu} contains already an item with text '{name}'");
+                throw new InvalidOperationException($"MenuFlyoutSubItem with text {parentSubMenu} contains already an item with text '{name}'");
             
             var itemToAdd = new MenuFlyoutItem()
             {
@@ -127,15 +138,18 @@ namespace MenuHandlingPlayground.Services
         
         public void RemoveMenuFlyoutItem(string menu, string name)
         {
-            var menuBarItem = Shell.Current.MenuBarItems.ToList().SingleOrDefault(menuBarItem => menuBarItem.Text == menu);
+            if (this.MenuHostingPage == null)
+                throw new InvalidOperationException($"{nameof(this.MenuHostingPage)} must not be null");
+            
+            var menuBarItem = this.MenuHostingPage.MenuBarItems.ToList().SingleOrDefault(menuBarItem => menuBarItem.Text == menu);
             
             if (menuBarItem == null)
-                throw new ArgumentNullException($"no MenuBarItem with text {menu} found in current application menu");
+                throw new InvalidOperationException($"no MenuBarItem with text {menu} found in current application menu");
             
             var itemToRemove = GetMenuFlyoutItem(name);
             
             if (itemToRemove == null)
-                throw new ArgumentNullException($"no MenuFlyouItem with text {name} found in MenuBarItem with text {menu}");
+                throw new InvalidOperationException($"no MenuFlyoutItem with text {name} found in MenuBarItem with text {menu}");
 
             menuBarItem.Remove(itemToRemove);
             
@@ -147,12 +161,12 @@ namespace MenuHandlingPlayground.Services
             var itemToRemove = GetSubMenuFlyoutItem(parentSubMenu, name);
             
             if (itemToRemove == null)
-                throw new ArgumentNullException($"no MenuFlyoutItem with text {name} and parent MenuFlyoutSubItem with text {parentSubMenu} found in current application menu");
+                throw new InvalidOperationException($"no MenuFlyoutItem with text {name} and parent MenuFlyoutSubItem with text {parentSubMenu} found in current application menu");
 
             var subMenu = GetSubMenu(parentSubMenu);
 
             if (subMenu == null)
-                throw new ArgumentNullException($"no MenuFlyoutSubItem with text {parentSubMenu} found in current application menu");
+                throw new InvalidOperationException($"no MenuFlyoutSubItem with text {parentSubMenu} found in current application menu");
 
             subMenu.Remove(itemToRemove);
             
@@ -176,5 +190,7 @@ namespace MenuHandlingPlayground.Services
 #endif
         }
         
+        public Page? MenuHostingPage { get;  set; }
+
     }
 }
