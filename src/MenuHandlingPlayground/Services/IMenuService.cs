@@ -14,5 +14,6 @@ namespace MenuHandlingPlayground.Services
         bool SubMenuExists(string name);
         bool MenuFlyoutItemInSubMenuExists(string parentSubMenu, string name);
         Page? MenuHostingPage { get;  set; }
+        void ForceMenuRebuild();
     }
 }

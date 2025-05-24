@@ -1,4 +1,5 @@
 ﻿
+using MenuHandlingPlayground.Services;
 using MenuHandlingPlayground.ViewModel;
 using Microsoft.Maui.Platform;
 
@@ -10,10 +11,18 @@ namespace MenuHandlingPlayground;
 
 public partial class AppShell : Shell
 {
-    public AppShell(AppShellViewModel appShellVm)
+    private readonly IMenuService _menuService;
+
+    public AppShell(AppShellViewModel appShellVm, IMenuService menuService)
     {
+        _menuService = menuService;
         InitializeComponent();
 
         this.BindingContext = appShellVm;
+    }
+
+    protected override void OnAppearing()
+    {
+        _menuService.ForceMenuRebuild();
     }
 }

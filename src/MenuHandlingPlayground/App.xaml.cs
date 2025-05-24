@@ -8,8 +8,9 @@ public partial class App : MvvmMauiApp
     {
         InitializeComponent();
         
-        this.MainPage = new AppShell(services.GetService<AppShellViewModel>()!);
+        var menuService = services.GetService<IMenuService>();
+        this.MainPage = new AppShell(services.GetService<AppShellViewModel>()!, menuService!);
 
-        services.GetService<IMenuService>()!.MenuHostingPage = this.MainPage;
+        menuService!.MenuHostingPage = this.MainPage;
     }
 }

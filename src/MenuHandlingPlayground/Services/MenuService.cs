@@ -183,7 +183,7 @@ namespace MenuHandlingPlayground.Services
         public bool MenuFlyoutItemInSubMenuExists(string parentSubMenu, string name) =>
             GetSubMenuFlyoutItem(parentSubMenu, name) != null;
         
-        private void ForceMenuRebuild()
+        public void ForceMenuRebuild()
         {
 #if MACCATALYST
             UIMenuSystem.MainSystem.SetNeedsRebuild();
